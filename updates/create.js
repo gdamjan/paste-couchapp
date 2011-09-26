@@ -1,3 +1,10 @@
+/*
+ * Update function used to create new documents (pastes)
+ * Will add a timestamp automatically
+ *
+ */
+
+
 function(doc, req) {
    if (doc) {
       return [null, "already exists"];

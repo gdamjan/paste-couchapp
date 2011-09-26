@@ -1,3 +1,9 @@
+/*
+ * A show function displaying plain paste content with a "text/plain"
+ * content-type.
+ *
+ */
+
 function(doc, req) {
    if (doc.content && doc.tags && doc.title) {
       start({
