@@ -58,12 +58,12 @@ as option, and ``/paste/_design/paste/_rewrite`` as value. This thing in the con
 file will look like::
 
     [vhosts]
-    paste.example.tld = /paste/_design/log/_rewrite
+    paste.example.tld = /paste/_design/paste/_rewrite
 
 or with ``curl``::
 
     curl -X PUT http://localhost:5984/_config/vhosts/paste.example.tld \
-        -d '"/paste/_design/log/_rewrite"'
+        -d '"/paste/_design/paste/_rewrite"'
 
 
 Read the documentation about `CouchDB Virtual Hosts`_ for
