@@ -1,8 +1,8 @@
 SCRIPT="_attachments/script/"
 
 all:
-	@echo Usage:
-	@echo "   make get-deps"
+	@echo 'Usage:'
+	@echo '   make get-deps'
 	@echo
 	@echo 'Then run:'
 	@echo '  couchapp init'

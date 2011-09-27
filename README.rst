@@ -49,6 +49,28 @@ raw contents of the paste, and it will add the paste title and tags to the http
 headers.
 
 
+Setup vhosts
+============
+
+Go to the configuration page of CouchDB (it's right there on the right in Futon),
+and then click on "Add a new section", set ``vhosts`` as section, your domain name
+as option, and ``/paste/_design/paste/_rewrite`` as value. This thing in the config
+file will look like::
+
+    [vhosts]
+    paste.example.tld = /paste/_design/log/_rewrite
+
+or with ``curl``::
+
+    curl -X PUT http://localhost:5984/_config/vhosts/paste.example.tld \
+        -d '"/paste/_design/log/_rewrite"'
+
+
+Read the documentation about `CouchDB Virtual Hosts`_ for
+further info.
+
+
+
 TODO
 ====
 
@@ -60,3 +82,4 @@ Some notes:
  * Cookie for deleting(?)
 
 .. _google-code-prettify: http://code.google.com/p/google-code-prettify/
+.. _CouchDB Virtual Hosts :http://wiki.apache.org/couchdb/Virtual_Hosts
