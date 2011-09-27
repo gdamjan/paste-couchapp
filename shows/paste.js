@@ -1,10 +1,7 @@
 function(doc, req) {
    start({
-      "headers" : {
-          "Content-type": "text/html"
-      }
+      "Content-type": "text/html; charset='utf-8'"
    });
    var Mustache = require("vendor/mustache");
-   var x = Mustache.to_html(this.templates.paste, doc);
-   return x;
+   Mustache.to_html(this.templates.paste, doc, null, send);
 }
