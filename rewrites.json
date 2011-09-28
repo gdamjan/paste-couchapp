@@ -8,9 +8,8 @@
  {"from": "/images/*", "to": "/images/*"},
  {"from": "/ddoc",     "to": "./"},
  {"from": "/ddoc/*",   "to": "./*"},
- {"from": "/json",     "to": "../../",  "method": "GET"},
- {"from": "/json/*",   "to": "../../*", "method": "GET"},
+ {"from": "/api",      "to": "../../",  "method": "GET"},
+ {"from": "/api/*",    "to": "../../*", "method": "GET"},
  {"from": "/raw/*",    "to": "./_show/raw/*"},
- {"from": "/_changes", "to": "../../_changes"},
  {"from": "/*",        "to": "./_show/paste/*"}
 ]
