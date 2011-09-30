@@ -4,13 +4,21 @@
  *
  */
 
-function(doc, req) {
-   if (doc.content && doc.tags && doc.title) {
-      start({
-         "Content-Type": "text/plain; charset=utf-8",
-         "X-Document-Title": JSON.stringify(doc.title),
-         "X-Document-Tags": JSON.stringify(doc.tags.join(', '))
-      });
-      send(doc.content);
+function (doc, req) {
+   if (!(doc && doc.title && doc.content)) {
+      return {"code": 404, "body": "Not found"};
    }
+
+   var tags = '';
+   if (doc.tags) {
+      tags = JSON.stringify(doc.tags.join(', '));
+   }
+
+   start({
+      "Content-Type": "text/plain; charset=utf-8",
+      "X-Document-Title": JSON.stringify(doc.title),
+      "X-Document-Tags": tags
+   });
+
+   send(doc.content);
 }
