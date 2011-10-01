@@ -26,24 +26,11 @@ jQuery(function($) {
       doc.content = $('#code').val().trim();
       var tags = $('#tags').val().split(',');
       doc.tags = tags.map(function(t) {return t.trim()});
-      $.post('./ddoc/_update/create', doc, function (data) {
+      $Couch.create(doc, './ddoc/_update/create').done(function (data) {
             window.location.pathname += data._id;
       })
       return false;
       //e.preventDefault();
-   })
-
-   $.ajaxSetup({
-      cache: false,
-      async: true,
-      dataType: 'json',
-      contentType: 'application/json'
-   })
-
-   $.ajaxPrefilter("json", function( options, origOptions, jqXHR ) {
-      if (typeof origOptions.data === 'object') {
-         options.data = JSON.stringify(origOptions.data);
-      }
    })
 
 })
