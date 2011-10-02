@@ -17,6 +17,8 @@
 
   <!-- 3rd party -->
   <script type="text/javascript" src="script/jquery.min.js"></script>
+  <script type="text/javascript" src="script/jquery.mousewheel.js"></script>
+  <script type="text/javascript" src="script/jquery.tagsphere.min.js"></script>
 
   <!-- my stuff -->
   <script type="text/javascript" src="script/my-couch.js"></script>
@@ -40,7 +42,40 @@
    </form>
   </div>
 </div>
+<div id="archive" class="page nonsence">
+    <h3>Архива</h3>
+    <ul></ul>
+</div>
+<div id="tag-cloud" class="page nonsence">
+    <h3>Тагови</h3>
+    <ul></ul>
+</div>
 
+<script type="text/javascript">
+$(function() {
+   $Couch.view('timestamp', {limit:8, descending:true}).done(
+      function(data) {
+         var el = $("#archive ul");
+         for (var i=0; i<data.rows.length; i++) {
+            var d = new Date(data.rows[i].key);
+            var dt = d.toLocaleDateString();
+            el.append("<li><b>"+dt+"</b><a href='"+data.rows[i].id+"'>"+data.rows[i].value+"</a></li>");
+         }
+      });
+});
+</script>
+<script type="text/javascript">
+$(function() {
+   $Couch.view('tags', {reduce:true, group:true}).done(
+      function(data) {
+         var el = $('#tag-cloud ul');
+         for (var i=0; i<data.rows.length; i++) {
+           el.append('<li><a href="бла" rel="' + data.rows[i].value+'">'+ data.rows[i].key +'</a></li>');
+         }
+         $('#tag-cloud').tagcloud();
+      });
+});
+</script>
 
 <a href="https://github.com/gdamjan/paste-couchapp"><img
     style="opacity: 0.7; position: absolute; top: 0; right: 0; border: 0;"
