@@ -35,8 +35,7 @@ var $Couch = function ($) {
     }
 
     var create = function (doc, id, opts) {
-        _opts.type = 'POST';
-        var _opts = $.extend({}, global_settings, opts);
+        var _opts = $.extend({type:'POST'}, global_settings, opts);
         // if id is undefined, default is POST to the database
         // otherwise if the id doesn't have a slash it's a PUT to the ./api/<id>
         // otherwise it's a POST to the id directly (usefull for update functions)
