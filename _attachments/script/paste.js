@@ -1,14 +1,22 @@
 jQuery(function($) {
 
-   /* tab insertion handling */
+   /* tab handling - gemo style */
    $('#code').keydown(function(e) {
       if (e.keyCode == 9 && !e.ctrlKey && !e.altKey) {
          if (this.setSelectionRange) {
             var start = this.selectionStart;
             var end = this.selectionEnd;
             var top = this.scrollTop;
-            this.value = this.value.slice(0, start) + '\t' + this.value.slice(end);
-            this.setSelectionRange(start + 1, start + 1);
+            var selected = this.value.slice(start, end);
+            if (e.shiftKey) {
+               // deindent
+               var replacement = selected.replace(/^\t/gm, '');
+            } else {
+               // indent
+               var replacement = selected.replace(/^/gm, '\t');
+            }
+            this.value = this.value.slice(0, start) + replacement + this.value.slice(end);
+            this.setSelectionRange(start, end + replacement.length - selected.length );
             this.scrollTop = top;
             e.preventDefault();
          }
