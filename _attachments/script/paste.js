@@ -1,6 +1,6 @@
 jQuery(function($) {
 
-   /* tab handling - gemo style */
+   /* tab key handling - gemo style */
    $('#code').keydown(function(e) {
       if (e.keyCode == 9 && !e.ctrlKey && !e.altKey) {
          if (this.setSelectionRange) {
@@ -28,6 +28,7 @@ jQuery(function($) {
       }
    })
 
+   /* handle paste creation */
    $('#paste').click(function(e) {
       var doc = {};
       doc.title = $('#title').val().trim();
@@ -40,5 +41,32 @@ jQuery(function($) {
       return false;
       //e.preventDefault();
    })
+
+   /* load archive */
+   $Couch.view('timestamp', {limit:8, descending:true}).done(
+      function(data) {
+         var el = $("#archive ul");
+         for (var i=0; i<data.rows.length; i++) {
+            var date = new Date(data.rows[i].key).toLocaleDateString();
+            var title = data.rows[i].value;
+            var id = data.rows[i].id;
+            $('<li>').html("<b>"+date+"</b><a href='"+id+"'>"+title+"</a>").appendTo(el);
+         }
+      });
+
+   /* load tagcloud */
+   $Couch.view('tags', {reduce:true, group:true}).done(
+      function(data) {
+         var el =  $('#tag-cloud ul');
+         for (var i=0; i<data.rows.length; i++) {
+            var tag = data.rows[i].key;
+            var freq = data.rows[i].value;
+            var a = $("<a>").text(tag);
+            a.attr({title:"See all pastes tagged with " + tag,
+                 href:"tags/" + tag});
+            a.css("fontSize", (freq / 10 < 1) ? freq / 10 + 1 + "em": (freq / 10 > 2) ? "2em" : freq / 10 + "em");
+            $('<li>').append(a).appendTo(el);
+         }
+      });
 
 })
