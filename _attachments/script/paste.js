@@ -46,11 +46,15 @@ jQuery(function($) {
    $Couch.view('timestamp', {limit:8, descending:true}).done(
       function(data) {
          var el = $("#archive ul");
+         var titleTmpl = el.attr('title') || "";
          for (var i=0; i<data.rows.length; i++) {
             var date = new Date(data.rows[i].key).toLocaleDateString();
             var title = data.rows[i].value;
             var id = data.rows[i].id;
-            $('<li>').html("<b>"+date+"</b><a href='"+id+"'>"+title+"</a>").appendTo(el);
+            var a = $('<a>').text(title);
+            a.attr({href:id, title: titleTmpl});
+            var b = $('<b>').text(date);
+            $('<li>').append(b, a).appendTo(el);
          }
       });
 
@@ -58,11 +62,12 @@ jQuery(function($) {
    $Couch.view('tags', {reduce:true, group:true}).done(
       function(data) {
          var el =  $('#tag-cloud ul');
+         var titleTmpl = el.attr('title') || "";
          for (var i=0; i<data.rows.length; i++) {
             var tag = data.rows[i].key;
             var freq = data.rows[i].value;
             var a = $("<a>").text(tag);
-            a.attr({title:"See all pastes tagged with " + tag,
+            a.attr({title: titleTmpl + " " + tag,
                  href:"tags/" + tag});
             a.css("fontSize", (freq / 10 < 1) ? freq / 10 + 1 + "em": (freq / 10 > 2) ? "2em" : freq / 10 + "em");
             $('<li>').append(a).appendTo(el);
