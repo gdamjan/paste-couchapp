@@ -127,6 +127,10 @@ input:focus, select:focus, textarea:focus {
    color: #ADB4BB;
    background-color: #333333;
 }
+.tags ul {
+   display: inline;
+   margin: 0; padding: 0;
+}
 .tags li {
    display: inline;
    margin-right: 6px;
@@ -151,7 +155,7 @@ input:focus, select:focus, textarea:focus {
    box-shadow: 0 2px 2px #FFFFFF;
 }
 div.container {
-   padding: 14px;
+   padding: 24px;
    margin: 0;
 }
 
