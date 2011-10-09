@@ -30,6 +30,7 @@ jQuery(function($) {
 
    /* handle paste creation */
    $('#paste').click(function(e) {
+      $('#top>.container').prepend('<div class="loader"></div>');
       var doc = {};
       doc.title = $('#title').val().trim();
       doc.content = $('#code').val().trim();
@@ -39,7 +40,6 @@ jQuery(function($) {
             window.location.pathname += data._id;
       })
       return false;
-      //e.preventDefault();
    })
 
    /* load archive */
