@@ -10,7 +10,7 @@ jQuery(function($) {
             var selected = this.value.slice(start, end);
             if (e.shiftKey) {
                // deindent
-               var replacement = selected.replace(/^\t/gm, '');
+               var replacement = selected.replace(/^(\t|\s{4})/gm, '');
             } else {
                // indent
                var replacement = selected.replace(/^/gm, '\t');
