@@ -1,4 +1,10 @@
 /*
+ * CommonJS-compatible mustache.js module
+ *
+ * See http://github.com/janl/mustache.js for more info.
+ */
+
+/*
   mustache.js — Logic-less templates in JavaScript
 
   See http://mustache.github.com/ for more info.
@@ -66,7 +72,7 @@ var Mustache = function() {
       if (text) {
         var lines = text.split("\n");
         for (var i = 0; i < lines.length; i++) {
-          this.send(lines[i] + "\n");
+          this.send(lines[i]);
         }
       }
     },
@@ -227,7 +233,7 @@ var Mustache = function() {
       for(var i = 0; i < lines.length; i++) {
         lines[i] = lines[i].replace(regex, tag_replace_callback, this);
         if(!in_recursion) {
-          this.send(lines[i] + "\n");
+          this.send(lines[i]);
         }
       }
 

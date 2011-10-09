@@ -13,5 +13,5 @@ function (doc, req) {
    });
 
    var Mustache = require("vendor/mustache");
-   Mustache.to_html(this.templates.paste, doc, null, send);
+   Mustache.to_html(this.templates.paste, doc, null, function(data) { send(data + "\n")});
 }
