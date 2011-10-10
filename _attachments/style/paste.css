@@ -177,6 +177,17 @@ div.container {
    margin: 0;
 }
 
+div.error {
+   background: url(../images/error.png) no-repeat scroll 50% 50% #DBb6b9;
+   position: absolute;
+   left:0;
+   top:0;
+   bottom:0;
+   right:0;
+   opacity: 0.5;
+   z-index: 999;
+}
+
 div.loader {
    background: url(../images/ajax_loader.gif) no-repeat scroll 50% 50% #DBE6E9;
    position: absolute;

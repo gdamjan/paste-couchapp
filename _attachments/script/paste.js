@@ -36,9 +36,14 @@ jQuery(function($) {
       doc.content = $('#code').val().trim();
       var tags = $('#tags').val().split(',');
       doc.tags = tags.map(function(t) {return t.trim()});
-      $Couch.create(doc, './ddoc/_update/create').done(function (data) {
+      var jhxr = $Couch.create(doc, './ddoc/_update/create')
+      jhxr.done(function (data) {
             window.location.pathname += data._id;
-      })
+      });
+      jhxr.fail(function () {
+            $('#top>.container>.loader').remove();
+            $('#top>.container').prepend('<div class="error"></div>');
+      });
       return false;
    })
 
