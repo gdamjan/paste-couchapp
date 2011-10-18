@@ -70,16 +70,5 @@ Read the documentation about `CouchDB Virtual Hosts`_ for
 further info.
 
 
-
-TODO
-====
-
-Some notes:
- * toggle line numbers
- * raw pastes
- * tag-cloud
- * Tab-key inserts tabstops?
- * Cookie for deleting(?)
-
 .. _google-code-prettify: http://code.google.com/p/google-code-prettify/
-.. _CouchDB Virtual Hosts :http://wiki.apache.org/couchdb/Virtual_Hosts
+.. _CouchDB Virtual Hosts: http://wiki.apache.org/couchdb/Virtual_Hosts
