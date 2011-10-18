@@ -57,7 +57,6 @@ var $Couch = function ($) {
         var _opts = $.extend({}, global_settings, opts);
         var _query = {
            update_seq: true,
-           stale: "update_after",
            reduce: false
         }
 
@@ -74,28 +73,104 @@ var $Couch = function ($) {
         return $.ajax("ddoc/_view/" + id, _opts);
     }
 
-    var changes = function (since, query, callback, opts) {
-        var _opts = $.extend({}, global_settings, opts);
+    /*
+     * creates a `changes` object whis has 4 methods:
+     *   start()
+     *   stop()
+     *   on_change(callback)
+     *   on_error(callback)
+     *
+     * it'll stay subscribed to the _changes feed forever, and reconnect
+     * on errors (using an exponentional backoff). also a watchdog is started
+     * that will make sure the TCP/IP connection didn't get stuck.
+     */
+    var changes = function (last_seq, query, opts) {
+        var start_opts = $.extend({}, global_settings, opts);
         var _query = {
            feed: "longpoll",
-           heartbeat: 10000
+           heartbeat: 30000
         }
-        _opts.data = $.extend({}, _query, query);
+        start_opts.data = $.extend({}, _query, query);
 
-        function fireaway (since, callback, opts) {
-           opts.data.since = since;
-           $.when( $.ajax("api/_changes", opts) ).then(
-              function (data) {
-                  callback(data);
-                  window.setTimeout(fireaway, 0, data.last_seq, callback, opts);
-              },
-              function (data) {
-                  // restart on error (maybe real backoff?)
-                  window.setTimeout(fireaway, 1000, since, callback, opts);
-              }
-           )
+        var state = {};
+        state.event = jQuery({});
+        state.stopped = true;
+        state.last_seq = last_seq;
+        state.jqXHR = null;
+        state.fail_count = 0;
+        state.watchdogID = null;
+
+        function watchdog(interval) {
+           var w = $.ajax("api/", {timeout: 5000})
+           w.done(function (msg, textStatus) {
+              state.watchdogID = window.setTimeout(watchdog, interval, interval)
+           });
+           w.fail(function (_, textStatus) {
+              console.log("Watchdog failed with: ", textStatus);
+              if (state.watchdogID !== null)
+                 window.clearTimeout(state.watchdogID);
+              state.watchdogID = null;
+              state.jqXHR.abort();
+           });
         }
-        fireaway (since, callback, _opts);
+
+        function changes_loop(_last_seq, _options) {
+           _options.data.since = _last_seq;
+           var jqXHR = $.ajax("api/_changes", _options);
+           state.jqXHR = jqXHR;
+
+           jqXHR.done(function (data) {
+              state.event.triggerHandler("on_change", [data]);
+              state.last_seq = data.last_seq;
+              state.fail_count = 0;
+              if (state.watchdogID !== null)
+                 window.clearTimeout(state.watchdogID);
+              state.watchdogID = null;
+              if (state.stopped !== true) {
+                 window.setTimeout(changes_loop, 50, data.last_seq, _options);
+              }
+           })
+
+           jqXHR.fail(function (_, textStatus, errorThrown) {
+              // restart on error, binary exponential truncated backoff
+              state.event.triggerHandler("on_error", [textStatus, errorThrown]);
+              if (state.stopped !== true) {
+                 state.fail_count<5 ? state.fail_count++ : state.fail_count;
+                 var backoff = (2<<state.fail_count) * 1500;
+                 window.setTimeout(changes_loop, backoff, _last_seq, _options);
+              }
+           })
+
+           watchdog(_options.data.heartbeat * 2);
+           return jqXHR;
+        }
+
+        var emiter = {};
+        emiter.start = function() {
+           if (state.stopped) {
+              state.stopped = false;
+              return changes_loop(state.last_seq, start_opts);
+           }
+           return state.jqXHR;
+        }
+        emiter.stop = function() {
+           state.stopped = true;
+           if (state.jqXHR) {
+              state.jqXHR.abort();
+           }
+        };
+        emiter.on_change = function(callback) {
+           state.event.bind("on_change", function (_ev, data) {
+              callback(data)
+           })
+        }
+        emiter.on_error = function(callback) {
+           state.event.bind("on_error", function (_ev, textStatus, errorThrown) {
+              callback(textStatus, errorThrown)
+           })
+        }
+
+        return emiter;
     }
 
 
