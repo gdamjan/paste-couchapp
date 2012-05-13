@@ -15,10 +15,10 @@ a:hover {
 }
 
 h1 {
-   color: #083944;
+   color: #6CB5E8;
+   font-size: 2.8em;
    margin: 0 0 10px;
-   font-size:2.8em;
-   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.65);
+   text-shadow: 2px 2px 1px rgba(255, 255, 255, 0.65);
 }
 
 h2 {
@@ -232,22 +232,28 @@ div.loader {
   text-align:center;
 }
 #tag-cloud ul li {
-  color: #fff;
-  list-style-type:none;
-  float:left;
-  margin:0 10px;
-  height:35px;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 1px 1px 5px #555555;
+    color: #FFFFFF;
+    float: left;
+    height: 20px;
+    list-style-type: none;
+    margin: 2px 10px;
+    padding-top: 2px;
 }
 #tag-cloud ul li a { text-decoration:none; color: #D5FFBB; }
 
 #bottom {
-   padding: 30px 30px 10px;
-   background-color: #1D222D;
-   box-shadow: 0 -3px 5px #254552; /*#888888;*/
+    background-color: #1D222D;
+    border-top: 1px solid #565C69;
+    box-shadow: 0 -3px 5px #151F34;
+    padding: 30px 30px 10px;
 }
 #bottom h3 {
-   color: #C6FF60;
-   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.65);
+    border-bottom: 1px dashed #FFFFFF;
+    color: #C6FF60;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.65);
 }
 
 pre.prettyprint {
