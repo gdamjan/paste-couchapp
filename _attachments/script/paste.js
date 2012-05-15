@@ -1,5 +1,10 @@
 jQuery(function($) {
-
+   /* ESC removes the error overlay */
+   $(document).keyup(function(e) {
+      if (e.keyCode == 27){
+         $('.error').remove();
+      }
+   });
    /* tab key handling - gemo style */
    $('#code').keydown(function(e) {
       if (e.keyCode == 9 && !e.ctrlKey && !e.altKey) {
