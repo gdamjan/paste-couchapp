@@ -37,15 +37,19 @@ jQuery(function($) {
    /* handle paste creation */
    $('#paste').click(function(e) {
       $('#top>.container').prepend('<div class="loader"></div>');
+      var tags = $('#tags').val().split(',').map(function(t) {return t.trim()});
       var doc = {};
       doc.title = $('#title').val().trim();
       doc.content = $('#code').val().trim();
-      var tags = $('#tags').val().split(',');
-      doc.tags = tags.map(function(t) {return t.trim()});
+      doc.tags = tags;
       var jhxr = $Couch.create(doc, './ddoc/_update/create')
       jhxr.done(function (data) {
          var data_url = window.location.pathname + data._id;
-         $.pjax({url: data_url, container: '#content'}).done(function () {
+         $.pjax({
+               url: data_url,
+               container: '#content',
+               fragment: 'div'
+         }).done(function () {
             $('#top>.container>.loader').remove();
             prettyPrint();
          });
