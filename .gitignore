@@ -2,5 +2,6 @@
 .couchappignore
 _attachments/script/google-code-prettify/
 _attachments/script/jquery.min.js
+_attachments/script/jquery.pjax.js
 _attachments/script/jquery.mousewheel.js
 _attachments/script/jquery.tagsphere.min.js

@@ -5,6 +5,7 @@ jQuery(function($) {
          $('.error').remove();
       }
    });
+
    /* tab key handling - gemo style */
    $('#code').keydown(function(e) {
       if (e.keyCode == 9 && !e.ctrlKey && !e.altKey) {
@@ -43,7 +44,11 @@ jQuery(function($) {
       doc.tags = tags.map(function(t) {return t.trim()});
       var jhxr = $Couch.create(doc, './ddoc/_update/create')
       jhxr.done(function (data) {
-            window.location.pathname += data._id;
+         var data_url = window.location.pathname + data._id;
+         $.pjax({url: data_url, container: '#content'}).done(function () {
+            $('#top>.container>.loader').remove();
+            prettyPrint();
+         });
       });
       jhxr.fail(function () {
             $('#top>.container>.loader').remove();
@@ -78,8 +83,9 @@ jQuery(function($) {
             var freq = data.rows[i].value;
             var a = $("<a>").text(tag);
             a.attr({title: titleTmpl + " " + tag,
-                 href:"tags/" + tag});
-            a.css("fontSize", (freq / 10 < 1) ? freq / 10 + 1 + "em": (freq / 10 > 2) ? "2em" : freq / 10 + "em");
+                  href:"tags/" + tag});
+            a.css("fontSize", (freq / 10 < 1) ? freq / 10 + 1 + "em":
+                  (freq / 10 > 2) ? "2em" : freq / 10 + "em");
             $('<li>').append(a).appendTo(el);
          }
       });
