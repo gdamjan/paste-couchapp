@@ -1,4 +1,6 @@
 /*
+ * http://wiki.apache.org/couchdb/Document_Update_Handlers
+ *
  * Update function used to create new documents (pastes)
  * Will add a timestamp automatically
  *
