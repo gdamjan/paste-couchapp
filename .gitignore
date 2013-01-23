@@ -5,3 +5,4 @@ _attachments/script/jquery.min.js
 _attachments/script/jquery.pjax.js
 _attachments/script/jquery.mousewheel.js
 _attachments/script/jquery.tagsphere.min.js
+vendor/mustache.js

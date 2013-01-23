@@ -18,5 +18,4 @@ function (doc, req) {
       return Mustache.to_html(this.templates.partials.content, doc);
    }
    return Mustache.to_html(this.templates.paste, doc, this.templates.partials);
-   // Mustache.to_html(this.templates.paste, doc, this.templates.partials, function(data) { send(data + "\n")});
 }
