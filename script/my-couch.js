@@ -19,6 +19,7 @@
  *   http://api.jquery.com/category/deferred-object/
  *
  */
+const CouchURL = new URL("https://db.softver.org.mk/paste/");
 
 var $Couch = function ($) {
 
@@ -30,47 +31,44 @@ var $Couch = function ($) {
     }
 
     var get = function (id, opts) {
-        var _opts = $.extend({}, global_settings, opts);
-        return $.ajax("api/" + id, _opts);
+        var opts = {...global_settings, ...opts};
+        return $.ajax(CouchURL + id, opts);
     }
 
     var create = function (doc, id, opts) {
-        var _opts = $.extend({type:'POST'}, global_settings, opts);
+        var opts = {...global_settings, ...opts};
         // if id is undefined, default is POST to the database
         // otherwise if the id doesn't have a slash it's a PUT to the ./api/<id>
         // otherwise it's a POST to the id directly (usefull for update functions)
         if (id === undefined) {
-            id = "api/";
+            id = "";
+            opts.type = 'POST';
         } else if (id.indexOf('/') === -1) {
-            id = "api/" + id;
-            _opts.type = 'PUT';
+            opts.type = 'PUT';
         }
         // stringify if needed
         if (typeof doc !== 'string') {
             doc = JSON.stringify(doc);
         }
-        _opts.data = doc;
-        return $.ajax(id, _opts)
+        opts.data = doc;
+        return $.ajax(CouchURL + id, opts)
     }
 
     var view = function (id, query, opts) {
-        var _opts = $.extend({}, global_settings, opts);
-        var _query = {
-           update_seq: true,
-           reduce: false
-        }
+        var opts = {...global_settings, ...opts};
+
+        assure_string(query, "key");
+        assure_string(query, "startkey");
+        assure_string(query, "endkey");
 
         // stringify if needed
         function assure_string(obj, attr) {
             if (obj && obj[attr] && typeof obj[attr] !== "string")
                 obj[attr] = JSON.stringify(obj[attr]);
         }
-        assure_string(query, "key");
-        assure_string(query, "startkey");
-        assure_string(query, "endkey");
 
-        _opts.data = $.extend({}, _query, query);
-        return $.ajax("ddoc/_view/" + id, _opts);
+        opts.data = { update_seq: true, reduce: false, ...query};
+        return $.ajax(CouchURL + "_design/paste/_view/" + id, opts);
     }
 
     /*
@@ -85,12 +83,8 @@ var $Couch = function ($) {
      * that will make sure the TCP/IP connection didn't get stuck.
      */
     var changes = function (last_seq, query, opts) {
-        var start_opts = $.extend({}, global_settings, opts);
-        var _query = {
-           feed: "longpoll",
-           heartbeat: 30000
-        }
-        start_opts.data = $.extend({}, _query, query);
+        var start_opts = {...global_settings, ...opts};
+        start_opts.data = { feed: "longpoll", heartbeat: 3000, ...query};
 
         var state = {};
         state.event = jQuery({});
@@ -101,7 +95,7 @@ var $Couch = function ($) {
         state.watchdogID = null;
 
         function watchdog(interval) {
-           var w = $.ajax("api/", {timeout: 5000})
+           var w = $.ajax(CouchURL, {timeout: 5000})
            w.done(function (msg, textStatus) {
               state.watchdogID = window.setTimeout(watchdog, interval, interval)
            });
@@ -116,7 +110,7 @@ var $Couch = function ($) {
 
         function changes_loop(_last_seq, _options) {
            _options.data.since = _last_seq;
-           var jqXHR = $.ajax("api/_changes", _options);
+           var jqXHR = $.ajax(CouchURL + "_changes", _options);
            state.jqXHR = jqXHR;
 
            jqXHR.done(function (data) {
