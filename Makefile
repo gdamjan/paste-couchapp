@@ -13,6 +13,5 @@ get-deps:
 	mkdir -p ${VENDOR}
 	mkdir -p ${SCRIPT}
 	cd ${SCRIPT} && wget -qN http://code.jquery.com/jquery.min.js
-	cd ${SCRIPT} && wget -q -O - http://google-code-prettify.googlecode.com/files/prettify-small-1-Jun-2011.tar.bz2 | tar xvjf -
 	cd ${SCRIPT} && wget -qN https://raw.githubusercontent.com/defunkt/jquery-pjax/master/jquery.pjax.js
 	cd ${VENDOR} && wget -qN https://raw.githubusercontent.com/janl/mustache.js/master/mustache.js
