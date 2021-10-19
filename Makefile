@@ -12,6 +12,4 @@ all:
 get-deps:
 	mkdir -p ${VENDOR}
 	mkdir -p ${SCRIPT}
-	cd ${SCRIPT} && wget -qN http://code.jquery.com/jquery.min.js
-	cd ${SCRIPT} && wget -qN https://raw.githubusercontent.com/defunkt/jquery-pjax/master/jquery.pjax.js
 	cd ${VENDOR} && wget -qN https://raw.githubusercontent.com/janl/mustache.js/master/mustache.js
