@@ -23,6 +23,7 @@
   <!-- my stuff -->
   <script type="text/javascript" src="script/my-couch.js"></script>
   <script type="text/javascript" src="script/paste.js"></script>
+  <script type="text/javascript" src="script/i18n.js"></script>
 </head>
 <body>
 <div id="top">
@@ -31,14 +32,14 @@
   <div id="content">
    <form id="paste_form">
       <div>
-         <span class="label">title:</span>
+         <span class="label" data-i18n="title_label"></span>
          <input type="text" id="title" autofocus>
       </div>
       <div><textarea cols="80" rows="10" id="code"></textarea></div>
       <div>
-         <span class="label">tags:</span>
-         <input type="text" id="tags" placeholder="comma separated list of tags">
-         <button id="paste" class="btn">Paste!</button>
+         <span class="label" data-i18n="tags_label"></span>
+         <input type="text" id="tags" placeholder="" data-i18n="tags_placeholder">
+         <button id="paste" class="btn" data-i18n="paste_button"></button>
       </div>
    </form>
   </div>
@@ -48,11 +49,11 @@
 <div class="container">
   <div id="archive">
     <h3>Archive</h3>
-    <ul title="Click to open paste"></ul>
+    <ul title="" data-i18n="click_to_open"></ul>
   </div>
   <div id="tag-cloud">
     <h3>Tag cloud</h3>
-    <ul title="See all pastes tagged with"></ul>
+    <ul title="" data-i18n="see_all_tagged"></ul>
  </div>
  <div style="clear:both"></div>
 </div>
