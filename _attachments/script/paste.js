@@ -7,7 +7,7 @@ jQuery(function($) {
    });
 
    /* tab key handling - gemo style */
-   $('#code').keydown(function(e) {
+   $(document).on('keydown', '#code', function(e) {
       if (e.keyCode == 9 && !e.ctrlKey && !e.altKey) {
          if (this.setSelectionRange) {
             var start = this.selectionStart;
@@ -35,7 +35,7 @@ jQuery(function($) {
    })
 
    /* handle paste creation */
-   $('#paste').click(function(e) {
+   $(document).on('click', '#paste', function(e) {
       $('#top>.container').prepend('<div class="loader"></div>');
       var tags = $('#tags').val().split(',').map(function(t) {return t.trim()});
       var doc = {};
